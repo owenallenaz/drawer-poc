@@ -1,5 +1,11 @@
 import { createContext } from "react";
+import { DrawerDef } from "./types";
 
-const AppContext = createContext({});
+export interface AppContextData {
+  addDrawer(drawerDef: DrawerDef): void;
+  removeDrawer(): void;
+}
+
+const AppContext = createContext<AppContextData>({} as AppContextData);
 
 export default AppContext;

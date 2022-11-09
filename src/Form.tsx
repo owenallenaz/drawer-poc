@@ -5,7 +5,7 @@ import AppContext from "./AppContext";
 
 function Form({
   config,
-  callbacks
+  callbacks,
 }: {
   config: FormConfig;
   callbacks: PageCallbacks;
@@ -25,7 +25,7 @@ function Form({
 
     setData((data) => ({
       ...data,
-      [name]: e.target.value
+      [name]: e.target.value,
     }));
   }, []);
 
@@ -59,18 +59,19 @@ function Form({
           appContext.addDrawer({
             config: {
               type: "form",
-              fields: ["wut", "is", "this", "from_parent"]
+              title: "Sub-Form",
+              fields: ["wut", "is", "this", "from_parent"],
             },
             callbacks: {
               save: (data) => {
                 setData((state) => ({
                   ...state,
-                  from_parent: data
+                  from_parent: data,
                 }));
 
                 appContext.removeDrawer();
-              }
-            }
+              },
+            },
           })
         }
       >
