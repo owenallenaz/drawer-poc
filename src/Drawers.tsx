@@ -4,14 +4,14 @@ import {
   ReactNode,
   Fragment,
   useCallback,
-  useMemo
+  useMemo,
 } from "react";
 import Drawer from "@mui/material/Drawer";
 import styled, { keyframes } from "styled-components";
 import Backdrop from "@mui/material/Backdrop";
 import calculateAnimationState from "./calculateAnimationState";
 
-const ANIMATION_DURATION = 100;
+const ANIMATION_DURATION = 200;
 
 const openAnimation = keyframes`
   from {
@@ -152,8 +152,7 @@ function Drawers<T>(props: {
         // Only show the content if we have content to show, and it's in an animation state that should display
         // We do not show the drawer content if it's opening or closing
         const showContent =
-          props.drawers[i] &&
-          ["open", "stacked", "stacking", "unstacking"].includes(className);
+          props.drawers[i] && !["closing", "opening"].includes(className);
 
         return (
           <Drawer
@@ -163,13 +162,13 @@ function Drawers<T>(props: {
             SlideProps={{
               appear: true,
               onEntered: onEntered,
-              onExited: onExited
+              onExited: onExited,
             }}
             transitionDuration={ANIMATION_DURATION}
             PaperProps={{
               className,
               //@ts-expect-error: TS thinks this is bogus, but it's not https://github.com/mui/material-ui/issues/27703
-              component: PaperDiv
+              component: PaperDiv,
             }}
           >
             {showContent ? props.children(props.drawers[i]) : null}
@@ -181,7 +180,7 @@ function Drawers<T>(props: {
         invisible={true}
         open={animating}
         sx={{
-          zIndex: 1300
+          zIndex: 1300,
         }}
       />
     </Fragment>
