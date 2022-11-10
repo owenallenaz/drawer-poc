@@ -7,34 +7,34 @@ import { DrawerDef } from "./types";
 import AppContext from "./AppContext";
 
 interface AppState {
-  content: "";
+  content: Record<string, any>;
   drawers: DrawerDef[];
 }
 
 export default function App() {
   const [state, setState] = useState<AppState>({
-    content: "",
-    drawers: []
+    content: {},
+    drawers: [],
   });
 
   const addDrawer = useCallback((drawerDef: DrawerDef) => {
     setState((state) => ({
       ...state,
-      drawers: [...state.drawers, drawerDef]
+      drawers: [...state.drawers, drawerDef],
     }));
   }, []);
 
   const removeDrawer = useCallback(() => {
     setState((state) => ({
       ...state,
-      drawers: [...state.drawers.slice(0, -1)]
+      drawers: [...state.drawers.slice(0, -1)],
     }));
   }, []);
 
   const appContext = useMemo(
     () => ({
       addDrawer,
-      removeDrawer
+      removeDrawer,
     }),
     [addDrawer, removeDrawer]
   );
@@ -63,25 +63,25 @@ export default function App() {
             drawer (Mosaic) from rendering the content of the drawer (App).
           </li>
         </ul>
-        <p>From Form: {state.content}</p>
+        <p>From Form: {JSON.stringify(state.content)}</p>
         <button
           onClick={() =>
             addDrawer({
               config: {
                 type: "form",
                 title: "New Form",
-                fields: ["foo", "bar", "baz", "from_parent"]
+                fields: ["foo", "bar", "baz", "from_parent"],
               },
               callbacks: {
                 save: (data) => {
                   setState((state) => ({
                     ...state,
-                    content: data
+                    content: data,
                   }));
 
                   removeDrawer();
-                }
-              }
+                },
+              },
             })
           }
         >

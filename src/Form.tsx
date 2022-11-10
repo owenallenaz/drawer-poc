@@ -12,7 +12,7 @@ function Form({
 }) {
   const appContext = useContext(AppContext);
   const [data, setData] = useState<Record<string, string>>(() => {
-    const data: Record<string, string> = {};
+    const data: Record<string, any> = {};
     for (const field of config.fields) {
       data[field] = "";
     }
@@ -32,21 +32,23 @@ function Form({
   return (
     <div>
       <h1>{config.title}</h1>
+      <p>Data: {JSON.stringify(data)}</p>
       <button onClick={appContext.removeDrawer}>Close</button>
 
       {callbacks.save && (
-        <button onClick={() => callbacks.save(JSON.stringify(data))}>
-          Save
-        </button>
+        <button onClick={() => callbacks.save(data)}>Save</button>
       )}
 
       {config.fields.map((val) => {
+        const strVal =
+          typeof data[val] === "object" ? JSON.stringify(data[val]) : data[val];
+
         return (
           <div key={val}>
             <label>{val}</label>
             <input
               type="text"
-              value={data[val]}
+              value={strVal}
               data-name={val}
               onChange={onChange}
             />
